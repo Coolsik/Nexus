@@ -1,0 +1,52 @@
+package org.swssm.nexus.TimeTable;
+
+import java.util.ArrayList;
+
+public class Channel {
+	
+	private String 				mId;				// 체널 ID
+	private String 				mChannelName;		// 체널 이름
+	private int					mChannelNumber;		// 체널 번호
+
+	private ArrayList<TvPrograme> mProgrameList;	// 방송 리스트
+	
+	public Channel(String id, String channelName, int channelNumber) {
+		super();
+		this.mId = id;
+		this.mChannelName = channelName;
+		this.mChannelNumber = channelNumber;
+		this.mProgrameList = new ArrayList<TvPrograme>();
+	}
+
+	public String getId() {
+		return mId;
+	}
+
+	public void setId(String mId) {
+		this.mId = mId;
+	}
+
+	public String getChannelName() {
+		return mChannelName;
+	}
+
+	public void setChannelName(String mChannelName) {
+		this.mChannelName = mChannelName;
+	}
+
+	public int getChannelNumber() {
+		return mChannelNumber;
+	}
+
+	public void setChannelNumber(int mChannelNumber) {
+		this.mChannelNumber = mChannelNumber;
+	}
+	
+	public void addTvPrograme(TvPrograme tvPrograme) {
+		mProgrameList.add(tvPrograme);
+	}
+
+	public ArrayList<TvPrograme> getProgrameList() {
+		return mProgrameList;
+	}
+}

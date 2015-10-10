@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="500dp"
+    android:layout_height="240dp"
+    android:orientation="horizontal" 
+    android:gravity="center_vertical"
+    android:background="#FFFFFF">
+    
+    
+    
+	<ImageView 
+	    android:id="@+id/img_tvprograme_img"
+	    android:layout_width="180dp"
+	    android:layout_height="200dp"
+	    android:src="@drawable/noimg"
+	    />
+    
+	<ScrollView 
+	    android:layout_margin="20dp"
+	    android:layout_width="0dp"
+	    android:layout_height="match_parent"
+	    android:layout_weight="1"
+	    >
+	    
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"
+	        >
+	        
+		<TextView 
+		    android:id="@+id/tv_title"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:textColor="#0000FF"
+		    android:maxLines="1"
+		    android:textSize="20sp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/tv_permission"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="시청가능 연령 : "
+		    android:visibility="gone"
+		    android:textColor="#FF0000"
+		    android:layout_margin="5dp"
+		    />
+		
+		<TextView 
+		    android:id="@+id/tv_description"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="설명 : "
+		    android:visibility="gone"
+		    android:layout_margin="5dp"
+		    android:textColor="#000000"
+		    />
+		
+		
+		
+		<TextView 
+		    android:id="@+id/tv_actor"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="출연진 : "
+		    android:visibility="gone"
+		    android:layout_margin="5dp"
+		    android:textColor="#000000"
+		    />
+		
+		<TextView 
+		    android:id="@+id/tv_director"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:text="연출 : "
+		    android:visibility="gone"
+		    android:layout_margin="5dp"
+		    android:textColor="#000000"
+		    />
+	        
+	    </LinearLayout>
+	    
+	</ScrollView>
+    
+</LinearLayout>

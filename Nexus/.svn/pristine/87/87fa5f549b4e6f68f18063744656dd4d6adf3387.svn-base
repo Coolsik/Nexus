@@ -1,0 +1,117 @@
+package org.swssm.nexus.TimeTable;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import org.swssm.nexus.R;
+
+import android.util.Log;
+
+public class Channel {
+	
+	public static final String SBS = "SBS";
+	public static final String KBS1 = "KBS1";
+	public static final String KBS2 = "KBS2";
+	public static final String MBC = "SEOULMBC";
+	public static final String EBS = "EBS_2";
+	
+	private String 				mId;						// 체널 ID트
+	private String 				mChannelName;				// 체널 이름
+	private int					mChannelNumber;			// 체널 번호
+	private String				mStreamingURL;			// Streamming URL Info
+	private int					mCompanyLogoResourceID;	// 방송국 로고 리소스 아이디
+
+	private ArrayList<TvPrograme> mProgrameList;		// 방송 리스트
+	
+	public Channel(String id, String channelName, int channelNumber) {
+		super();
+		this.mId = id;
+		this.mChannelName = channelName;
+		this.mChannelNumber = channelNumber;
+		this.mProgrameList = new ArrayList<TvPrograme>();
+		
+		if(channelName.equals(SBS)) {
+			mStreamingURL = "http://211.189.127.32:9981/stream/channelid/616531845?ticket=C4AA6B5A8A44BF578E6397A6E98248F1003B2EBD";
+			mCompanyLogoResourceID = R.drawable.logo_sbs;
+		} 
+		
+		else if(channelName.equals(KBS1)) {
+			mStreamingURL = "http://211.189.127.32:9981/stream/channelid/1946227474?ticket=00597EC314BB02F05DA6373639468D507957AC03";
+			mCompanyLogoResourceID = R.drawable.logo_kbs1;
+		} 
+		
+		else if(channelName.equals(KBS2)) {
+			mStreamingURL = "http://211.189.127.32:9981/stream/channelid/176836252?ticket=99ED0B8C5873562463FFA606E05DDA257C08569D";
+			mCompanyLogoResourceID = R.drawable.logo_kbs2;
+		} 
+				
+		else if(channelName.equals(MBC)) {
+			mStreamingURL = "http://211.189.127.32:9981/stream/channelid/1747044827?ticket=AD40F96F6E47A51914A326F0822DD5AA4C45A64E";
+			mCompanyLogoResourceID = R.drawable.logo_mbc;
+		} 
+				
+		else if(channelName.equals(EBS)) {
+			mStreamingURL = "http://211.189.127.32:9981/stream/channelid/349823475?ticket=17F99D73D28F3AC2597222F14662AD0F79A46427";
+			mCompanyLogoResourceID = R.drawable.logo_ebs;
+		} 
+	}
+
+	public String getId() {
+		return mId;
+	}
+
+	public void setId(String mId) {
+		this.mId = mId;
+	}
+
+	public String getChannelName() {
+		return mChannelName;
+	}
+
+	public void setChannelName(String mChannelName) {
+		this.mChannelName = mChannelName;
+	}
+
+	public int getChannelNumber() {
+		return mChannelNumber;
+	}
+
+	public void setChannelNumber(int mChannelNumber) {
+		this.mChannelNumber = mChannelNumber;
+	}
+	
+	public void addTvPrograme(TvPrograme tvPrograme) {
+		mProgrameList.add(tvPrograme);
+	}
+
+	public ArrayList<TvPrograme> getProgrameList() {
+		return mProgrameList;
+	}
+
+	public String getStreamingURL() {
+		return mStreamingURL;
+	}
+
+	public int getCompanyLogoResourceID() {
+		return mCompanyLogoResourceID;
+	}
+	
+	public TvPrograme currentTvPrograme() {
+		Calendar currentTime = Calendar.getInstance();
+		
+		TvPrograme tvPrograme;
+		for(int i=0; i < mProgrameList.size(); i++) {
+			
+			tvPrograme = mProgrameList.get(i);
+			
+			Calendar startTime = tvPrograme.getStartTime();
+			Calendar endTime  = tvPrograme.getEndTime();
+			
+			if(currentTime.after(startTime) && currentTime.before(endTime)) {
+				return tvPrograme;
+			}
+		}
+		
+		return null;
+	}
+}

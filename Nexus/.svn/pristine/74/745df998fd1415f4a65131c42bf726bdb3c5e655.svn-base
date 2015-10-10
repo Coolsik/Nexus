@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="schedule">
+		<item>HDTV 편성표</item>
+		<item>IPTV 편성표</item>
+	</string-array>
+</resources>

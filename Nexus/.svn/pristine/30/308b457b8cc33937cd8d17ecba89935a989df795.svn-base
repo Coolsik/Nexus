@@ -1,0 +1,85 @@
+package org.swssm.nexus.TimeTable;
+
+import java.util.HashMap;
+
+import org.swssm.nexus.R;
+
+import android.content.Context;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+public class HDTVChannelAdapter extends BaseAdapter {
+
+	private Context mContext;
+	private HashMap<String, Channel>	mChannelList;
+	private String[] mKeys;
+	LayoutInflater mInflater;
+	
+	public HDTVChannelAdapter(Context context, HashMap<String, Channel> channelList) {
+		mChannelList = channelList;
+		mContext = context;
+		mKeys = mChannelList.keySet().toArray(new String[channelList.size()]);
+		mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+	}
+	
+	
+	@Override
+	public int getCount() {
+		return mChannelList.size();
+	}
+
+	@Override
+	public Channel getItem(int position) {
+		return mChannelList.get(mKeys[position]);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		if(convertView == null) {
+			convertView = mInflater.inflate(R.layout.item_hdtv_channel, parent, false);
+		}
+		
+		Channel channel = getItem(position);
+		TvPrograme tvPrograme=channel.currentTvPrograme();
+		
+		ImageView company = (ImageView) convertView.findViewById(R.id.img_company);
+		TextView tv = (TextView) convertView.findViewById(R.id.tv_hdtv_name);
+		TextView time = (TextView) convertView.findViewById(R.id.tv_hdtv_time);
+		ImageButton play = (ImageButton) convertView.findViewById(R.id.btn_play);
+		play.setFocusable(false);
+		
+		company.setImageResource(channel.getCompanyLogoResourceID());
+		
+		if(tvPrograme!=null) {
+			tv.setText(tvPrograme.getTitle());
+			time.setText(tvPrograme.getShowTime());
+		}
+		
+		
+		
+		
+		play.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+			}
+		});
+		
+		
+		
+		return convertView;
+	}
+
+}

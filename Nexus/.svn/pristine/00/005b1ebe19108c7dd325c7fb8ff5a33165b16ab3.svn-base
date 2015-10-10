@@ -1,0 +1,121 @@
+package org.swssm.nexus.Activity;
+
+import org.swssm.nexus.R;
+import org.swssm.nexus.Fragment.HDTVFragment;
+import org.swssm.nexus.Fragment.SideMenuFragment;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
+public class MainActivity extends Activity implements SideMenuFragment.OnSideMenuEventListener {
+	
+	public static final int HDTV_SCHEDULE = 0;
+	public static final int IPTV_SCHEDULE = 1;
+	
+	
+	Fragment mSideMenu;
+	Fragment mContents;
+	FragmentManager mFm;
+	FragmentTransaction mTr;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		mFm=getFragmentManager();
+		mSideMenu=mFm.findFragmentById(R.id.fragment_sidemenu);
+		mContents = mFm.findFragmentById(R.id.fl_contents);
+		
+		mTr=mFm.beginTransaction();
+		mTr.hide(mSideMenu);
+		mTr.commit();
+	}
+	
+	public void mOnClick(View v) {
+		switch(v.getId()) {
+		
+		// 타이틀바 메뉴 버튼
+		case R.id.btn_menu:
+			mTr=mFm.beginTransaction();
+
+			if(mSideMenu.isVisible()) {
+				mTr.hide(mSideMenu);
+			} else {
+				mTr.show(mSideMenu);
+			}
+			
+			mTr.commit();
+			break;
+			
+		// 타이틀바 셋팅 버튼
+		case R.id.btn_setting:
+			Toast.makeText(this, "Click Setting Menu", Toast.LENGTH_SHORT).show();
+			break;
+			
+		// 타이틀바 스케줄 버튼
+		case R.id.btn_schedule:
+			showScheduleDlg();
+			break;
+		}
+	}
+	
+	private void showScheduleDlg() {
+		AlertDialog.Builder builder=new AlertDialog.Builder(this);
+		builder.setItems(R.array.schedule, listener);
+		builder.show();
+	}
+	
+	DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			//String[] schedule = getResources().getStringArray(R.array.schedule);
+			//Toast.makeText(MainActivity.this, schedule[which] + ", " + which, Toast.LENGTH_SHORT).show();
+			
+			mTr=mFm.beginTransaction();
+			switch(which) {
+			case HDTV_SCHEDULE:
+				break;
+				
+			case IPTV_SCHEDULE:
+				break;
+			}
+			mTr.commit();
+		}
+	};
+
+	@Override
+	public void onSideMenuEvent(int viewID) {
+		
+		switch(viewID) {
+		case R.id.btn_hdtv:
+			Toast.makeText(this, "Click HDTV Menu aa", Toast.LENGTH_SHORT).show();
+			
+			if(mContents != null) {
+				Log.d("lueseypid", "mContent == null");
+				
+				mTr = mFm.beginTransaction();
+				mTr.remove(mContents);
+				mTr.commit();
+			}
+			
+			mTr=mFm.beginTransaction();
+			HDTVFragment hdtv = new HDTVFragment();
+			mTr.add(R.id.fl_contents, hdtv, "HDTV");
+			mTr.commit();
+			break;
+			
+		case R.id.btn_iptv:
+			Toast.makeText(this, "Click IPTV Menu", Toast.LENGTH_SHORT).show();
+			break;
+		}
+	}
+}

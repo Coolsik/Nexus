@@ -1,0 +1,205 @@
+package org.swssm.nexus.Activity;
+
+import java.lang.ref.WeakReference;
+
+import org.swssm.nexus.R;
+import org.videolan.libvlc.EventHandler;
+import org.videolan.libvlc.IVideoPlayer;
+import org.videolan.libvlc.LibVLC;
+import org.videolan.libvlc.Media;
+import org.videolan.libvlc.MediaList;
+
+import android.app.Activity;
+import android.content.res.Configuration;
+import android.graphics.PixelFormat;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.ViewGroup.LayoutParams;
+
+public class VideoPlayerActivity extends Activity implements SurfaceHolder.Callback, IVideoPlayer {
+	
+	public static final String TAG = "Nexus VedioPlayer";
+
+	// Display Object (SurfaceView, SurfaceHolder)
+	private SurfaceView mSurfaceView;		// 동영상이 출력될 SurfaceView객체
+	private SurfaceHolder mHolder;			// SurfaceView를 관리하는 객체
+	
+	// MediaPlayer
+	private LibVLC mLibVlc;
+	private int mVideoHeight;
+	private int mVideoWidth;
+	
+	// Handler
+	Handler mHandler = new MyHandler(this);
+	
+	private final static int VideoSizeChanged = -1;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_video_player);
+		
+		mSurfaceView = (SurfaceView) findViewById(R.id.sf_videoplayer);
+		mHolder = mSurfaceView.getHolder();
+		mHolder.addCallback(this);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		String url = "http://211.189.127.32:9981/stream/channelid/616531845?ticket=C4AA6B5A8A44BF578E6397A6E98248F1003B2EBD";
+		//String url = "http://211.189.127.32:9981/stream/channelid/616531845?ticket=C4AA6B5A8A44BF578E6397A6E98248F1003B2EBD?resolution=384";
+		createPlayer(url);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		releasePlayer();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		releasePlayer();
+	}
+	
+	// Surface가 생성될때 호출
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {}
+	
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, 
+			int width, int height) {
+		
+		if(mLibVlc != null)
+			mLibVlc.attachSurface(mHolder.getSurface(), this);
+	}
+	
+
+	@Override
+	public void setSurfaceSize(int width, int height, int visible_width,
+			int visible_height, int sar_num, int sar_den) {
+		Message msg = Message.obtain(mHandler, VideoSizeChanged, width, height);
+		msg.sendToTarget();
+	}
+	
+	
+	private void setSize(int width, int height) {
+        mVideoWidth = width;
+        mVideoHeight = height;
+        if (mVideoWidth * mVideoHeight <= 1)
+            return;
+
+         // 화면 크기
+        int w = getWindow().getDecorView().getWidth();
+        int h = getWindow().getDecorView().getHeight();
+
+        
+        boolean isPortrait = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
+        if (w > h && isPortrait || w < h && !isPortrait) {
+            int i = w;
+            w = h;
+            h = i;
+        }
+
+        float videoAR = (float) mVideoWidth / (float) mVideoHeight;
+        float screenAR = (float) w / (float) h;
+
+        if (screenAR < videoAR)
+            h = (int) (w / videoAR);
+        else
+            w = (int) (h * videoAR);
+
+        // Surface View Buffer 크기
+        mHolder.setFixedSize(mVideoWidth, mVideoHeight);
+
+        // Surface View 화면 크기 수정
+        LayoutParams lp = mSurfaceView.getLayoutParams();
+        lp.width = w;
+        lp.height = h;
+        mSurfaceView.setLayoutParams(lp);
+        mSurfaceView.invalidate();
+    }
+	
+	
+	private void createPlayer(String url) {
+		releasePlayer();
+		
+		try {
+			mLibVlc = LibVLC.getInstance();
+			mLibVlc.setHardwareAcceleration(LibVLC.HW_ACCELERATION_DISABLED);
+			mLibVlc.setSubtitlesEncoding("");
+			mLibVlc.setAout(LibVLC.AOUT_OPENSLES);
+			mLibVlc.setTimeStretching(true);
+			mLibVlc.setChroma("RV32");
+			mLibVlc.setVerboseMode(true);
+			LibVLC.restart(this);
+			EventHandler.getInstance().addHandler(mHandler);
+			mHolder.setFormat(PixelFormat.RGBX_8888);
+			mHolder.setKeepScreenOn(true);
+			MediaList list = mLibVlc.getMediaList();
+			list.clear();
+			list.add(new Media(mLibVlc, LibVLC.PathToURI(url)), false);
+			mLibVlc.playIndex(0);
+			
+		} catch (Exception e) {
+			Log.d("TAG", e.getMessage());
+		}
+	}
+	
+	private void releasePlayer() {
+		if(mLibVlc == null)
+			return;
+		
+		EventHandler.getInstance().removeHandler(mHandler);
+		mLibVlc.stop();
+		mLibVlc.detachSubtitlesSurface();
+		mHolder = null;
+		mLibVlc.closeAout();
+		mLibVlc.destroy();
+		mLibVlc = null;
+		
+		mVideoHeight = 0;
+		mVideoWidth = 0;
+	}
+	
+	private static class MyHandler extends Handler {
+		
+		private WeakReference<VideoPlayerActivity> mOwner;
+		
+		public MyHandler(VideoPlayerActivity activity) {
+			mOwner = new WeakReference<VideoPlayerActivity>(activity);
+		}
+		
+		@Override
+		public void handleMessage(Message msg) {
+			VideoPlayerActivity playerActivity = mOwner.get();
+			
+			
+			if(msg.what == VideoSizeChanged) {
+				playerActivity.setSize(msg.arg1, msg.arg2);
+				return;
+			}
+			
+			Bundle b = msg.getData();
+			switch(b.getInt("event")) {
+			case EventHandler.MediaPlayerEndReached:
+				playerActivity.releasePlayer();
+				break;
+			case EventHandler.MediaPlayerPlaying:
+			case EventHandler.MediaPlayerPaused:
+			case EventHandler.MediaPlayerStopped:
+			default:
+				break;
+			}
+		}
+	}
+}

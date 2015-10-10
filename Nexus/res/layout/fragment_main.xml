@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+   
+    >
+    
+    <ImageView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/intro"
+        />
+    
+	<LinearLayout 
+	    android:visibility="gone"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_marginTop="10dp"
+	    android:layout_marginBottom="5dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    >
+	    
+	    <Button 
+	       android:id="@+id/btn_main_sbs"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_sbs"
+	        />
+	    
+	    <Button 
+	       android:id="@+id/btn_main_kbs1"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_kbs1"
+	       android:layout_marginLeft="10dp"
+	        />
+	    
+	    <Button 
+	       android:id="@+id/btn_main_kbs2"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_kbs2"
+	       android:layout_marginLeft="10dp"
+	        />
+	    
+	    <Button 
+	       android:id="@+id/btn_main_mbc"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_mbc"
+	       android:layout_marginLeft="10dp"
+	        />
+	    
+	    <Button 
+	       android:id="@+id/btn_main_ebs"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_ebs"
+	       android:layout_marginLeft="10dp"
+	        />
+	    
+	    
+	</LinearLayout>
+	
+	<LinearLayout 
+	    android:visibility="gone"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_marginTop="10dp"
+	    android:layout_marginBottom="10dp"
+	    android:layout_marginLeft="10dp"
+	    android:layout_marginRight="10dp"
+	    >
+	    
+	    <Button 
+	       android:id="@+id/btn_main_iptv"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_main_iptv_style"
+	        />
+	    
+	    <Button 
+	       android:id="@+id/btn_main_file"
+	       android:layout_width="0dp"
+	       android:layout_height="wrap_content"
+	       android:layout_weight="1"
+	       android:background="@drawable/btn_main_file_style"
+	       android:layout_marginLeft="10dp"
+	        />
+	</LinearLayout>
+    
+    
+    
+    
+    
+</LinearLayout>

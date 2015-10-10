@@ -1,0 +1,159 @@
+package org.swssm.nexus.TimeTable;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+
+import android.util.Log;
+
+public class TvPrograme {
+	private String				Id;					// 방송프로그램 ID
+	
+	private Calendar 				StartTime;			// 방송시작 시간
+	private Calendar 				EndTime;			// 방송종료 시간
+		
+	private String				Title;				// 제목
+	private String 				SubTitle;			// 소제목
+	private String 				Description;		// 방송에 대한 설명
+	private String 				Permission;		// 시청가능 연령
+	
+	private ArrayList<String> 	ActorList;			// 출연진
+	private ArrayList<String> 	DirectorList;		// 연출진
+	
+	public TvPrograme() {}
+	
+	public String getId() {
+		return Id;
+	}
+
+	public void setId(String id) {
+		Id = id;
+	}
+
+	public Calendar getStartTime() {
+		return StartTime;
+	}
+
+	public void setStartTime(String startTime) throws ParseException {
+		StartTime=parseDateFormat(startTime);
+	}
+
+	public Calendar getEndTime() {
+		return EndTime;
+	}
+
+	public void setEndTime(String endTime) throws ParseException {
+		EndTime=parseDateFormat(endTime);
+	}
+
+	public String getTitle() {
+		return Title;
+	}
+
+	public void setTitle(String title) {
+		Title = title;
+	}
+
+	public String getSubTitle() {
+		return SubTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		SubTitle = subTitle;
+	}
+
+	public String getDescription() {
+		return Description;
+	}
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+	public String getPermission() {
+		return Permission;
+	}
+
+	public void setPermission(String permission) {
+		Permission = permission;
+	}
+	
+	public void addActor(String actor) {
+		if(ActorList == null) {
+			ActorList = new ArrayList<String>();
+		}
+		ActorList.add(actor);
+	}
+	
+	public void addDirector(String director) {
+		if(DirectorList == null) {
+			DirectorList = new ArrayList<String>();
+		}
+		DirectorList.add(director);
+	}
+	
+	public Calendar parseDateFormat(String dateStr) throws ParseException {
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddhhmmss +0900");
+		format.parse(dateStr);
+		Calendar calendar=format.getCalendar();
+		
+		/*
+		Log.d("lueseypid", calendar.get(Calendar.YEAR) + "년 "
+						+ (calendar.get(Calendar.MONTH) + 1) + "월 "
+						+ calendar.get(Calendar.DAY_OF_MONTH) + "일 "
+						+ calendar.get(Calendar.HOUR_OF_DAY) + "시 "
+						+ calendar.get(Calendar.MINUTE) + "분에 시작합니다. ");
+		*/
+		return calendar;
+	}
+	
+	public String getShowTime() {
+		String time = StartTime.get(Calendar.HOUR_OF_DAY) + ":" + StartTime.get(Calendar.MINUTE) 
+				+ " ~ " + EndTime.get(Calendar.HOUR_OF_DAY) + ":" + EndTime.get(Calendar.MINUTE);
+		
+		return time;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

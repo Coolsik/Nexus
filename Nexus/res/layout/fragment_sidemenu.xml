@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sidemenu_background"
+    android:orientation="vertical"
+    android:gravity="right"
+    >
+	    <Button
+		    android:id="@+id/btn_hdtv"
+		    android:layout_marginTop="5dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_hdtv_style"
+		    />
+	    <Button
+		    android:id="@+id/btn_iptv"
+		    android:layout_marginTop="5dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_iptv_style"
+		    />
+	    <Button
+		    android:id="@+id/btn_file"
+		    android:layout_marginTop="5dp"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:background="@drawable/btn_file_style"
+		    />
+</LinearLayout>
+
